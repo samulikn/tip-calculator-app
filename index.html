@@ -1,45 +1,62 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="min-h-screen">
+
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="src/styles/output.css" rel="stylesheet">
-
-  <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
-  
+  <script src="src/script.js" defer></script>
   <title>Frontend Mentor | Tip calculator app</title>
-
-  <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
-  <style>
-    .attribution { font-size: 11px; text-align: center; }
-    .attribution a { color: hsl(228, 45%, 44%); }
-  </style>
 </head>
+
 <body>
-
-  Bill
-
-  Select Tip %
-  5%
-  10%
-  15%
-  25%
-  50%
-  Custom
-
-  Number of People
-
-  Tip Amount
-  / person
-
-  Total
-  / person
-
-  Reset
-  
-  <div class="attribution">
-    Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>. 
-    Coded by <a href="#">Your Name Here</a>.
-  </div>
+  <header>
+    <img src="images/logo.svg" alt="logo">
+  </header>
+  <main>
+    <form class="flex flex-col gap-8 xl:flex-row xl:gap-12">
+      <div class="@container">
+        <section>
+          <label for="bill">Bill</label>
+          <input id="bill" type="number" class="border-2">
+        </section>
+        <section>
+          <div>
+            <p>Select Tip %</p>
+            <label for="tip5" class=""><input id="tip5" type="radio" class="hidden">5%</label>
+            <label for="tip10" class=""><input id="tip10" type="radio" class="hidden">10%</label>
+            <label for="tip15" class=""><input id="tip15" type="radio" class="hidden">15%</label>
+            <label for="tip25" class=""><input id="tip25" type="radio" class="hidden">25%</label>
+            <label for="tip50" class=""><input id="tip50" type="radio" class="hidden">50%</label>
+            <label for="tip0" class=""><input id="tip0" type="radio" class="hidden">Custom</label>
+          </div>
+        </section>
+        <section>
+          <label for="people">Number of people</label>
+          <input id="people" type="number">
+        </section>
+      </div>
+      <div>
+        <section>
+          <div>
+            <div>
+              <p>Tip amount</p><span>/ person</span>
+            </div>
+            <p>0</p>
+            <div>
+              <p>Total</p><span>/ person</span>
+            </div>
+            <p>0</p>
+          </div>
+          <button role="reset">Reset</button>
+        </section>
+      </div>
+    </form>
+  </main>
+  <!-- <footer class="attribution">
+    Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>.
+    Coded by <a href="https://github.com/samulikn">Nataliia</a>.
+  </footer> -->
 </body>
+
 </html>
