@@ -1,56 +1,89 @@
-<!DOCTYPE html>
-<html lang="en" class="min-h-screen">
+<!doctype html>
+<html lang="en" class="min-h-screen sm:scroll-smooth">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="src/styles/output.css" rel="stylesheet">
-  <script src="src/script.js" defer></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="src/styles/output.css" rel="stylesheet" />
+  <script type="module" src="src/script/main.js" defer></script>
   <title>Frontend Mentor | Tip calculator app</title>
 </head>
 
-<body>
-  <header>
-    <img src="images/logo.svg" alt="logo">
+<body
+  class="overflow-x-hidden h-full flex flex-col justify-center sm:items-center font-space-mono font-bold bg-grey-200">
+  <header class="mt-12 mb-10 mx-auto xl:mt-40 xl:mb-22">
+    <img src="images/logo.svg" alt="logo" class="" />
   </header>
-  <main>
-    <form class="flex flex-col gap-8 xl:flex-row xl:gap-12">
-      <div class="@container">
-        <section>
-          <label for="bill">Bill</label>
-          <input id="bill" type="number" class="border-2">
-        </section>
-        <section>
-          <div>
-            <p>Select Tip %</p>
-            <label for="tip5" class=""><input id="tip5" type="radio" class="hidden">5%</label>
-            <label for="tip10" class=""><input id="tip10" type="radio" class="hidden">10%</label>
-            <label for="tip15" class=""><input id="tip15" type="radio" class="hidden">15%</label>
-            <label for="tip25" class=""><input id="tip25" type="radio" class="hidden">25%</label>
-            <label for="tip50" class=""><input id="tip50" type="radio" class="hidden">50%</label>
-            <label for="tip0" class=""><input id="tip0" type="radio" class="hidden">Custom</label>
+  <main class="flex flex-col">
+    <h1 class="sr-only">Tip calculator app</h1>
+    <form id="bill-splitter"
+      class="container sm:max-w-2xl xl:max-w-4xl px-6 py-8 rounded-t-3xl bg-white shadow-2xl flex flex-col gap-8 sm:px-20 sm:py-12 sm:rounded-3xl xl:flex-row xl:p-8 xl:gap-12">
+      <section class="px-2 my-3 flex flex-col gap-8 xl:gap-9 sm:p-0 xl:shrink-0 xl:max-w-3/7">
+        <section class="">
+          <div class="flex justify-between">
+            <label for="bill" class="text-base/6 text-grey-500">Bill</label>
+            <span id="bill-error" class="text-orange-400 sr-only" aria-live="assertive" aria-atomic="true"></span>
           </div>
+          <input id="bill" name="bill-amount" type="text" placeholder="0.00" maxlength="9"
+            class="mt-2 px-4 py-2 w-full bg-grey-50 rounded-sm text-green-900 text-2xl/9 text-right cursor-pointer bg-[url(/images/icon-dollar.svg)] bg-no-repeat bg-position-[center_left_1.5rem] focus:outline-green-400 focus:outline-2" />
         </section>
-        <section>
-          <label for="people">Number of people</label>
-          <input id="people" type="number">
-        </section>
-      </div>
-      <div>
-        <section>
-          <div>
-            <div>
-              <p>Tip amount</p><span>/ person</span>
-            </div>
-            <p>0</p>
-            <div>
-              <p>Total</p><span>/ person</span>
-            </div>
-            <p>0</p>
+        <fieldset class="flex flex-col gap-2">
+          <div class="flex justify-between">
+            <legend class="mb-1.5 text-base/6 text-grey-500">Select Tip %</legend>
+            <span id="tip-error" class="text-orange-400 sr-only" aria-live="assertive" aria-atomic="true"></span>
           </div>
-          <button role="reset">Reset</button>
+          <div
+            class="grid grid-cols-2 gap-3 sm:grid-cols-3 [&_label]:text-2xl/9 [&_label]:w-auto [&_label]:px-4 [&_label]:py-2 [&_label]:rounded-sm [&_label]:bg-green-900 [&_label]:text-white [&_label]:text-center [&_label]:cursor-pointer [&_label]:hover:bg-green-200 [&_label]:has-checked:bg-green-400">
+            <label for="tip5"><input id="tip5" type="radio" name="tip-amount" value="5"
+                class="tip-fixed hidden" />5%</label>
+            <label for="tip10"><input id="tip10" type="radio" name="tip-amount" value="10"
+                class="tip-fixed hidden" />10%</label>
+            <label for="tip15"><input id="tip15" type="radio" name="tip-amount" value="15"
+                class="tip-fixed hidden" />15%</label>
+            <label for="tip25"><input id="tip25" type="radio" name="tip-amount" value="25"
+                class="tip-fixed hidden" />25%</label>
+            <label for="tip50"><input id="tip50" type="radio" name="tip-amount" value="50"
+                class="tip-fixed hidden" />50%</label>
+            <label for="tip" class="hidden">Custom</label>
+            <input id="tip" type="text" name="tip-amount" maxlength="6" placeholder="Custom"
+              class="w-auto px-3 py-2 text-2xl/9 rounded-sm bg-grey-50 text-green-900 text-right cursor-pointer focus:outline-green-400 focus:outline-2 placeholder:text-center" />
+          </div>
+        </fieldset>
+        <section class="">
+          <div class="flex justify-between">
+            <label for="people" class="text-base/6 text-grey-500">Number of People</label>
+            <span id="people-error" class="text-orange-400 sr-only" aria-live="assertive" aria-atomic="true"></span>
+          </div>
+          <input id="people" name="people-count" type="text" maxlength="2" placeholder="0"
+            class="mt-2 px-4 py-2 w-full bg-grey-50 rounded-sm text-green-900 text-2xl/9 text-right cursor-pointer bg-[url('/images/icon-person.svg')] bg-no-repeat bg-position-[center_left_1.5rem] focus:outline-green-400 focus:outline-2" />
         </section>
-      </div>
+      </section>
+      <section class="p-6 bg-green-900 rounded-2xl grow flex flex-col gap-8 text-white sm:px-8 sm:py-6 sm:justify-between overflow-scroll">
+        <div class="flex flex-col gap-6 sm:py-6">
+          <div class="flex justify-between items-center">
+            <div class="xl:mr-auto">
+              <p class="text-base/6 text-nowrap">Tip Amount</p>
+              <span class="text-xs/4 text-grey-400">/ person</span>
+            </div>
+            <div class="flex items-end font-bold text-green-400 text-3xl/1 xl:text-5xl/0">
+              <span class="">$</span>
+              <output id="tip-total" name="tip-total" class="self-start">0.00</output>
+            </div>
+          </div>
+          <div class="flex justify-between items-center">
+            <div class="xl:mr-auto">
+              <p class="text-base/6">Total</p>
+              <span class="text-xs/4 text-grey-400 text-nowrap">/ person</span>
+            </div>
+            <div class="flex items-end grow-0 font-bold text-green-400 text-3xl/1 xl:text-5xl/0">
+              <span class="">$</span>
+              <output id="total-perPerson" name="total-perPerson" class="">0.00</output>
+            </div>
+          </div>
+        </div>
+        <button type="reset" id="reset-btn" disabled
+          class="flex-none py-2 px-8 bg-green-400 disabled:bg-green-750 text-xl/8 text-green-800 rounded-md hover:bg-green-200 cursor-pointer xl:mb-4">RESET</button>
+      </section>
     </form>
   </main>
   <!-- <footer class="attribution">
