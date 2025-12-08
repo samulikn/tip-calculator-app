@@ -1,1 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 @import "tailwindcss";
+
+@theme {
+  --font-space-mono: "Space Mono", monospace;
+  --text-xs: 13px;
+  --text-3xl: 32px;
+  --leading-0: -1px;
+  --leading-1: -0.67px;
+  --leading-4: 19px;
+  --leading-8: 30px;
+
+  --color-white: #FFFFFF;
+  --color-black: #000000;
+  --color-grey-600: #3D6666;
+  --color-grey-550: #547878;
+  --color-grey-500: #5E7A7D;
+  --color-grey-400: #7F9D9F;
+  --color-grey-300: #9EBBBD;
+  --color-grey-200: #C5E4E7;
+  --color-grey-50: #F3F9FA;
+  --color-green-900: #00474B;
+  --color-green-800: #085C61;
+  --color-green-750: #0D686D;
+  --color-green-400: #26C2AE;
+  --color-green-200: #9FE8DF;
+  --color-orange-400: #E17052;
+
+  --tracking-5: 0.2em;
+}
+
+@layer base {
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* input[type="number"] {
+    -moz-appearance: textfield;
+  } */
+}
