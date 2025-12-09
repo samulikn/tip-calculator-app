@@ -18,15 +18,10 @@
     --container-2xl: 42rem;
     --container-4xl: 56rem;
     --text-xs: 13px;
-    --text-xs--line-height: calc(1 / 0.75);
     --text-base: 1rem;
-    --text-base--line-height: calc(1.5 / 1);
     --text-xl: 1.25rem;
-    --text-xl--line-height: calc(1.75 / 1.25);
     --text-2xl: 1.5rem;
-    --text-2xl--line-height: calc(2 / 1.5);
     --text-3xl: 32px;
-    --text-3xl--line-height: calc(2.25 / 1.875);
     --text-5xl: 3rem;
     --font-weight-bold: 700;
     --radius-sm: 0.25rem;
@@ -40,7 +35,6 @@
     --leading-1: -0.67px;
     --leading-4: 19px;
     --leading-8: 30px;
-    --color-grey-550: #547878;
     --color-grey-500: #5E7A7D;
     --color-grey-400: #7F9D9F;
     --color-grey-200: #C5E4E7;
@@ -347,11 +341,11 @@
   .bg-white {
     background-color: var(--color-white);
   }
-  .bg-\[url\(\/images\/icon-dollar\.svg\)\] {
-    background-image: url(/images/icon-dollar.svg);
+  .bg-\[url\(\'\.\/images\/icon-dollar\.svg\'\)\] {
+    background-image: url('./images/icon-dollar.svg');
   }
-  .bg-\[url\(\/images\/icon-person\.svg\)\] {
-    background-image: url(/images/icon-person.svg);
+  .bg-\[url\(\'\.\/images\/icon-person\.svg\'\)\] {
+    background-image: url('./images/icon-person.svg');
   }
   .bg-position-\[center_left_1\.5rem\] {
     background-position: center left 1.5rem;
