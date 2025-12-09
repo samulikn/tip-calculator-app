@@ -1,7 +1,7 @@
 const people = document.getElementById("people") as HTMLInputElement;
 const bill = document.getElementById("bill") as HTMLInputElement;
 const tipAmountList: NodeListOf<HTMLInputElement> | [] = document.querySelectorAll("form input[name='tip-amount']");
-const tipsInPercentage: NodeListOf<HTMLInputElement> = document.querySelectorAll(".tip-fixed");
+const tipsInPercentage: NodeListOf<HTMLInputElement> | [] = document.querySelectorAll(".tip-fixed");
 const customTip = document.getElementById("tip") as HTMLInputElement;
 const billSplitterForm = document.getElementById("bill-splitter") as HTMLFormElement;
 const totalTipPerPerson = document.getElementById("tip-total") as HTMLOutputElement;
@@ -34,9 +34,19 @@ function clearError(elementIds: string[]): void {
   })
 }
 
+function convertingToFloatString(input: string): string {
+  if (input.includes(".")) {
+    const index: number = Array.from(input).findIndex((el) => el === ".");
+    return parseInt(input.substring(0, index)).toString() +
+      input.substring(index, input.length);
+  } else {
+    return parseInt(input).toString();
+  }
+}
+
 customTip.addEventListener("beforeinput", (e: InputEvent) => {
   const inputTipValue: string | null = e.data;
-  const currentTip = customTip.value;
+  const currentTip: string = customTip.value;
 
   if (!inputTipValue) return;
   if (e.inputType.startsWith("delete")) return;
@@ -49,8 +59,7 @@ customTip.addEventListener("beforeinput", (e: InputEvent) => {
     e.preventDefault();
   }
 
-  if (
-    !currentTip.includes(".") && currentTip.length === 3 && !/[,.]/.test(inputTipValue)) {
+  if (!currentTip.includes(".") && currentTip.length === 3 && !/[,.]/.test(inputTipValue)) {
     e.preventDefault();
   }
 
@@ -64,26 +73,11 @@ customTip.addEventListener("beforeinput", (e: InputEvent) => {
 });
 
 customTip.addEventListener("input", () => {
-  let tipAmount = customTip.value.replace(/,/, ".");
+  let tipInput: string = customTip.value.replace(/,/, ".");
+  tipInput = convertingToFloatString(tipInput);
+  customTip.value = parseFloat(tipInput) >= 0 ? tipInput : "";
 
-  if (tipAmount.includes(".")) {
-    const index = Array.from(tipAmount).findIndex((el) => el === ".");
-    tipAmount =
-      parseInt(tipAmount.substring(0, index)).toString() +
-      tipAmount.substring(index, tipAmount.length);
-  } else {
-    tipAmount = parseInt(tipAmount).toString();
-  }
-
-  const calculatedTip: number = parseFloat(tipAmount);
-
-  const stringValue = calculatedTip >= 0 ? tipAmount : "";
-
-  customTip.value = stringValue;
-
-  tips = calculatedTip;
-
-  if (!customTip.value || customTip.value === "0.00") {
+  if (!customTip.value || parseFloat(customTip.value) === 0) {
     showError("tip", "Can't be zero");
   } else {
     clearError(["tip"]);
@@ -97,7 +91,6 @@ let tipSelected = (tip: HTMLInputElement) => {
     } else {
       customTip.value = "";
       clearError(["tip"]);
-      tips = (parseFloat(bill.value) * parseInt(tip.value)) / 100;
     }
   });
 };
@@ -133,23 +126,11 @@ bill.addEventListener("beforeinput", (e: InputEvent) => {
 });
 
 bill.addEventListener("input", () => {
-  let input = bill.value.replace(/,/, ".");
-  if (input.includes(".")) {
-    const index = Array.from(input).findIndex((el) => el === ".");
-    input =
-      parseInt(input.substring(0, index)).toString() +
-      input.substring(index, input.length);
-  } else {
-    input = parseInt(input).toString();
-  }
+  let input: string = bill.value.replace(/,/, ".");
+  input = convertingToFloatString(input);
+  bill.value = parseFloat(input) >= 0 ? input : "";
 
-  const billValue = parseFloat(input);
-  const stringValue = billValue >= 0 ? input : "";
-
-  bill.value = stringValue;
-  totalBill = billValue;
-
-  if (!bill.value || bill.value === "0.00") {
+  if (!bill.value || parseFloat(bill.value) === 0) {
     showError("bill", "Can't be zero");
   } else {
     clearError(["bill"]);
@@ -158,7 +139,7 @@ bill.addEventListener("input", () => {
 
 function valueToFloat(i: HTMLInputElement) {
   i.addEventListener("focusout", () => {
-    i.value ? parseFloat(i.value).toFixed(2) : "";
+    i.value = i.value ? parseFloat(i.value).toFixed(2) : "";
   });
 }
 
@@ -179,10 +160,8 @@ people.addEventListener("beforeinput", (e: InputEvent) => {
 });
 
 people.addEventListener("input", () => {
-  const integerValue = parseInt(people.value);
-  const stringValue = integerValue >= 0 ? integerValue.toString() : "";
-  people.value = stringValue;
-  totalPeople = parseInt(people.value);
+  const integerValue: number = parseInt(people.value);
+  people.value = integerValue >= 0 ? integerValue.toString() : "";
 
   if (!people.value || people.value === "0") {
     showError("people", "Can't be zero");
@@ -194,7 +173,16 @@ people.addEventListener("input", () => {
 function result(e: Event) {
   e.preventDefault();
 
-  if (totalBill && tips && totalPeople) {
+  const selectedTip = billSplitterForm.elements.namedItem("tip-amount") as RadioNodeList;
+
+  const tipAmount: number = customTip.value ? parseFloat(customTip.value) : parseInt(selectedTip.value) * parseFloat(bill.value) / 100;
+  tips = tipAmount ? tipAmount : 0;
+
+  totalBill = parseFloat(bill.value);
+  totalPeople = parseInt(people.value);
+
+  if (totalBill && totalPeople) {
+
     totalTipPerPerson.value = (tips / totalPeople).toFixed(2);
     totalPerPerson.value = ((totalBill + tips) / totalPeople).toFixed(2);
 

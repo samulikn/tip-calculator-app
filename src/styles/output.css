@@ -669,6 +669,11 @@
       background-color: var(--color-green-750);
     }
   }
+  .disabled\:text-green-800 {
+    &:disabled {
+      color: var(--color-green-800);
+    }
+  }
   .has-checked\:bg-green-200 {
     &:has(*:checked) {
       background-color: var(--color-green-200);
@@ -1111,10 +1116,26 @@
       }
     }
   }
+  .\[\&_label\]\:hover\:text-green-900 {
+    & label {
+      &:hover {
+        @media (hover: hover) {
+          color: var(--color-green-900);
+        }
+      }
+    }
+  }
   .\[\&_label\]\:has-checked\:bg-green-400 {
     & label {
       &:has(*:checked) {
         background-color: var(--color-green-400);
+      }
+    }
+  }
+  .\[\&_label\]\:has-checked\:text-green-900 {
+    & label {
+      &:has(*:checked) {
+        color: var(--color-green-900);
       }
     }
   }
