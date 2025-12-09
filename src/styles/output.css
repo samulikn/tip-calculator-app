@@ -475,11 +475,26 @@
   .bg-white {
     background-color: var(--color-white);
   }
+  .bg-\[url\(\'\.\/images\/icon-dollar\.svg\'\)\] {
+    background-image: url('./images/icon-dollar.svg');
+  }
+  .bg-\[url\(\'\/images\/icon-dollar\.svg\'\)\] {
+    background-image: url('/images/icon-dollar.svg');
+  }
   .bg-\[url\(\'\/images\/icon-person\.svg\'\)\] {
     background-image: url('/images/icon-person.svg');
   }
+  .bg-\[url\(\'images\/icon-dollar\.svg\'\)\] {
+    background-image: url('images/icon-dollar.svg');
+  }
+  .bg-\[url\(\'images\/icon-person\.svg\'\)\] {
+    background-image: url('images/icon-person.svg');
+  }
   .bg-\[url\(\/images\/icon-dollar\.svg\)\] {
     background-image: url(/images/icon-dollar.svg);
+  }
+  .bg-\[url\(\/images\/icon-person\.svg\)\] {
+    background-image: url(/images/icon-person.svg);
   }
   .bg-\[url\(images\/icon-dollar\.svg\)\] {
     background-image: url(images/icon-dollar.svg);
