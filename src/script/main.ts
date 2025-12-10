@@ -34,7 +34,56 @@ function clearError(elementIds: string[]): void {
   })
 }
 
-function convertingToFloatString(input: string): string {
+function checkingValue(e:InputEvent) {
+  const input: string | null = e.data;
+  const element = e.currentTarget as HTMLInputElement;
+  const current: string = element.value;
+
+  if (!input) return;
+  if (e.inputType.startsWith("delete")) return;
+  
+  if (e.inputType === "insertFromPaste") {
+    if (!input || !/^\d+(\.\d{0,2})?$/.test(input)) {
+      e.preventDefault();
+    }
+    return;
+  }
+
+  if (!input || !/[\d,.]/.test(input)) {
+    e.preventDefault();
+    return;
+  }
+
+  // Check if bill value less 1000000
+  const elementId = element.getAttribute("id");
+  if ( elementId === "bill" && !current.includes(".") && current.length === 6 && !/[,.]/.test(input)) {
+    e.preventDefault();
+    return;
+  }
+
+  // Check tips value less 100%
+  if ( elementId === "tip" && parseFloat(current + input) > 100) {
+    e.preventDefault();
+    return;
+  }
+
+  if ((input === "." && current.includes(".")) || (input === "," && current.includes("."))) {
+    e.preventDefault();
+    return;
+  }
+
+  const selectionStart: number = element.selectionStart || 0;
+  const selectionEnd: number = element.selectionEnd || 0;
+  const newValue: string = 
+    current.slice(0, selectionStart) + input + current.slice(selectionEnd);
+
+  if (!/^\d+([,.]\d{0,2})?$/.test(newValue)) {
+    e.preventDefault();
+  }
+
+}
+
+function displayInputAsFloat(input: string): string {
   if (input.includes(".")) {
     const index: number = Array.from(input).findIndex((el) => el === ".");
     return parseInt(input.substring(0, index)).toString() +
@@ -44,90 +93,29 @@ function convertingToFloatString(input: string): string {
   }
 }
 
-customTip.addEventListener("beforeinput", (e: InputEvent) => {
-  const inputTipValue: string | null = e.data;
-  const currentTip: string = customTip.value;
+[customTip, bill].forEach(el => el.addEventListener("beforeinput", checkingValue));
 
-  if (!inputTipValue) return;
-  if (e.inputType.startsWith("delete")) return;
-
-  if (e.inputType === "insertFromPaste") {
-    if (parseFloat(inputTipValue).toFixed(2)) return;
-  }
-
-  if (/[,.]/.test(inputTipValue) && currentTip.includes(".")) {
-    e.preventDefault();
-  }
-
-  if (!currentTip.includes(".") && currentTip.length === 3 && !/[,.]/.test(inputTipValue)) {
-    e.preventDefault();
-  }
-
-  if (!/[\d,.]/.test(inputTipValue)) {
-    e.preventDefault();
-  }
-
-  if (/^\d+\.\d{2}$/.test(currentTip) && inputTipValue) {
-    e.preventDefault();
-  }
-});
-
-customTip.addEventListener("input", () => {
+customTip.addEventListener("input", (e) => {
   let tipInput: string = customTip.value.replace(/,/, ".");
-  tipInput = convertingToFloatString(tipInput);
+  tipInput = displayInputAsFloat(tipInput);
   customTip.value = parseFloat(tipInput) >= 0 ? tipInput : "";
-
-  if (!customTip.value || parseFloat(customTip.value) === 0) {
-    showError("tip", "Can't be zero");
-  } else {
-    clearError(["tip"]);
-  }
 });
 
-let tipSelected = (tip: HTMLInputElement) => {
-  tip.addEventListener("click", (e: MouseEvent) => {
-    if (tip.id === "tip") {
-      tipsInPercentage.forEach((tip) => (tip.checked = false));
+const tipSelected = (tipBtn: HTMLInputElement) => {
+  tipBtn.addEventListener("click", () => {
+    if (tipBtn.id === "tip") {
+      tipsInPercentage.forEach((tipFixed) => (tipFixed.checked = false));
     } else {
       customTip.value = "";
-      clearError(["tip"]);
     }
   });
 };
 
-tipAmountList.forEach((item: HTMLInputElement) => tipSelected(item));
-
-bill.addEventListener("beforeinput", (e: InputEvent) => {
-  const inputValue: string | null = e.data;
-  const current = bill.value;
-
-  if (!inputValue) return;
-  if (e.inputType.startsWith("delete")) return;
-  if (e.inputType === "insertFromPaste") {
-    if (parseFloat(inputValue).toFixed(2)) return;
-  }
-
-  if (/[,.]/.test(inputValue) && current.includes(".")) {
-    e.preventDefault();
-  }
-
-  if (
-    !current.includes(".") && current.length === 6 && !/[,.]/.test(inputValue)) {
-    e.preventDefault();
-  }
-
-  if (!/[\d,.]/.test(inputValue)) {
-    e.preventDefault();
-  }
-
-  if (/^\d+\.\d{2}$/.test(current) && inputValue) {
-    e.preventDefault();
-  }
-});
+tipAmountList.forEach((tipBtn: HTMLInputElement) => tipSelected(tipBtn));
 
 bill.addEventListener("input", () => {
   let input: string = bill.value.replace(/,/, ".");
-  input = convertingToFloatString(input);
+  input = displayInputAsFloat(input);
   bill.value = parseFloat(input) >= 0 ? input : "";
 
   if (!bill.value || parseFloat(bill.value) === 0) {
@@ -173,13 +161,13 @@ people.addEventListener("input", () => {
 function result(e: Event) {
   e.preventDefault();
 
-  const selectedTip = billSplitterForm.elements.namedItem("tip-amount") as RadioNodeList;
-
-  const tipAmount: number = customTip.value ? parseFloat(customTip.value) : parseInt(selectedTip.value) * parseFloat(bill.value) / 100;
-  tips = tipAmount ? tipAmount : 0;
-
   totalBill = parseFloat(bill.value);
   totalPeople = parseInt(people.value);
+
+  const selectedTip = billSplitterForm.elements.namedItem("tip-amount") as RadioNodeList;
+
+  const tipAmount: number = customTip.value ? parseFloat(customTip.value) : parseFloat(selectedTip.value);
+  tips = tipAmount ? tipAmount * totalBill / 100 : 0;
 
   if (totalBill && totalPeople) {
 
@@ -187,6 +175,8 @@ function result(e: Event) {
     totalPerPerson.value = ((totalBill + tips) / totalPeople).toFixed(2);
 
     resetBtn.removeAttribute("disabled");
+  } else {
+    clearOutputs();
   }
 }
 
@@ -199,15 +189,18 @@ function clearInputs() {
   tips = 0;
   totalPeople = 0;
 
+  clearError(["bill", "people"]);
+}
+
+function clearOutputs() {
   totalTipPerPerson.value = "0.00";
   totalPerPerson.textContent = "0.00";
 
-  clearError(["bill", "tip", "people"]);
-
+  resetBtn.disabled = true;
 }
 
-resetBtn.addEventListener("click", (e: Event) => {
+resetBtn.addEventListener("click", (e: PointerEvent) => {
   e.preventDefault();
   clearInputs();
-  resetBtn.disabled = true;
+  clearOutputs();
 });
