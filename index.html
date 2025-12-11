@@ -36,8 +36,7 @@
             <label><input id="tip15" type="radio" name="tip-amount" value="15" class="tip-fixed sr-only" />15%</label>
             <label><input id="tip25" type="radio" name="tip-amount" value="25" class="tip-fixed sr-only" />25%</label>
             <label><input id="tip50" type="radio" name="tip-amount" value="50" class="tip-fixed sr-only" />50%</label>
-            <label for="tip" class="sr-only">Custom</label>
-            <input id="tip" type="text" name="tip-amount" maxlength="6" placeholder="Custom"
+            <input id="tip" type="text" name="tip-amount" maxlength="6" placeholder="Custom" aria-label="Custom tip amount"
               class="w-auto px-3 py-2 text-2xl/9 rounded-sm bg-grey-50 text-green-900 text-right cursor-pointer focus:outline-green-400 focus:outline-2 placeholder:text-center" />
           </div>
         </fieldset>
@@ -74,8 +73,8 @@
             </div>
           </div>
         </div>
-        <button type="reset" id="reset-btn" disabled
-          class="flex-none py-2 px-8 bg-green-400 disabled:bg-green-750 text-xl/8 disabled:text-green-800 text-green-900 rounded-md hover:bg-green-200 cursor-pointer xl:mb-4">RESET</button>
+        <button type="reset" id="reset-btn" aria-disabled="true" disabled
+          class="flex-none py-2 px-8 bg-green-400 disabled:bg-green-750 text-xl/8 disabled:cursor-not-allowed disabled:text-green-800 text-green-900 rounded-md hover:bg-green-200 cursor-pointer xl:mb-4">RESET</button>
       </section>
     </form>
   </main>

@@ -695,6 +695,11 @@
       outline-color: var(--color-orange-400);
     }
   }
+  .disabled\:cursor-not-allowed {
+    &:disabled {
+      cursor: not-allowed;
+    }
+  }
   .disabled\:bg-green-750 {
     &:disabled {
       background-color: var(--color-green-750);

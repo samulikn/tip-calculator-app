@@ -79,7 +79,7 @@ function displayInputAsFloat(input) {
     }
 }
 [customTip, bill].forEach(el => el.addEventListener("beforeinput", checkingValue));
-customTip.addEventListener("input", (e) => {
+customTip.addEventListener("input", () => {
     let tipInput = customTip.value.replace(/,/, ".");
     tipInput = displayInputAsFloat(tipInput);
     customTip.value = parseFloat(tipInput) >= 0 ? tipInput : "";
@@ -162,7 +162,7 @@ function clearInputs() {
 }
 function clearOutputs() {
     totalTipPerPerson.value = "0.00";
-    totalPerPerson.textContent = "0.00";
+    totalPerPerson.value = "0.00";
     resetBtn.disabled = true;
 }
 resetBtn.addEventListener("click", (e) => {
